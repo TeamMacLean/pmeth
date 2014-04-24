@@ -1,3 +1,4 @@
+#encoding: utf-8
 class PMeth
 	# Input: An integer you wish to know whether is prime
 	# Output: true/false
@@ -12,7 +13,7 @@ class PMeth
 
 	# Input: A permutation array of unique objects
 	# Output: A random integer that the length of the Input 0 array can be divided by to get another integer (the randomly chosen size of chunks that permutations will be split into, in the recombine/mutate methods)
-	def self.division(objects) #number of objects must be > 10
+	def self.division(objects) #number of objects must be => 10
 		x = 1.5
 		until objects.length/x == (objects.length/x).to_i && x <= objects.length
 			x = (objects.length/10).to_f + rand(objects.length).to_f
