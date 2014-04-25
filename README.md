@@ -1,5 +1,6 @@
 pmeth
 =====
+[![Gem Version](https://badge.fury.io/rb/pmeth.svg)](http://badge.fury.io/rb/pmeth)
 
 Ruby gem: Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, where permutations are arrays of unique objects.
 
@@ -7,9 +8,7 @@ Install
 ---
 
 ```
-
 gem install pmeth
-
 ```
 
 OR download [here](https://rubygems.org/gems/pmeth)
@@ -21,25 +20,19 @@ Currently the methods described below can only be used to rearrange permutations
 
 For example:
 
-```
-
+```ruby
 a = %w(a b c d e f g h i j)
 b = a.shuffle
-
 ```
 
 Each method returns a new permutation.
 
 There are currently two mutation methods and one recombination method, which can be used as follows:
 
-```
-
+```ruby
 PMeth.mutate(a)
-
 PMeth.mini_mutate(a)
-
 PMeth.recombine(a,b)
-
 ```
 
 How methods work
