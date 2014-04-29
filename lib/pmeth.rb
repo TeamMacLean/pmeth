@@ -1,33 +1,76 @@
 #encoding: utf-8
 class PMeth
-	# Input: An integer you wish to know whether is prime
-	# Output: true/false
+	# Returns true if n is a prime number, false if not
 	def self.prime?(n)
 		for d in 2..(n - 1)
 			if (n % d) == 0
-	    		return false
-	    	end
+				return false
+			end
 		end
 		true
 	end
 
-	# Input: A permutation array of unique objects
-	# Output: A random integer that the length of the Input 0 array can be divided by to get another integer (the randomly chosen size of chunks that permutations will be split into, in the recombine/mutate methods)
-	def self.division(objects) #number of objects must be => 10
-		x = 1.5
-		until objects.length/x == (objects.length/x).to_i && x <= objects.length
-			x = (objects.length/10).to_f + rand(objects.length).to_f
+	# Returns a random integer that array can be divided by to get another integer
+	def self.division(array)
+		x = 1.5 # x assigned a non-integer value to begin with
+		if prime?(array.length) # array with prime number of objects is not divisible by any integer other than itself
+			x = array.length
+		else
+			until x > 0 && array.length/x.to_f == (array.length/x.to_f).to_i && Integer === x
+				x = rand(array.length)
+			end
 		end
 		return x
 	end
 
-	# Input 0: A parent permutation array of unique objects
-	# Input 1: A second parent permutation array of the same unique objects as input 0
-	# Output: A child permutation array, whose order is a recombination of the parent permutations (the same unique objects ordered differently to either input)
+	# Returns a new permutation that has had a randomly sized sub-section re-ordered by shuffle
+	def self.chunk_mutate(permutation)
+		if prime?(permutation.length) # if there are a prime number of objects in the permutation
+			ig = rand(permutation.length)-1 # choose a random object to ignore - to add back at its original index after mutation
+			ig_obj = permutation[ig] # save the object
+			permutation.delete_at(ig)
+		end
+		mutant = []
+		1.times do # this is to make use of the redo statement below
+			x = 0 # x is the randomly chosen size of chunks that permutation will be split into
+			until x > 2 # the chunk to be re-ordered must have at least 2 objects
+				x = division(permutation)
+			end
+			sliced = permutation.each_slice(x).to_a # permutation is sliced into chunks of size x
+			e = rand(sliced.length-1) # one of the chunks is chosen at random...
+			sliced[e] = sliced[e].shuffle # ... and the objects within are shuffled
+			new_perm = sliced.flatten
+			if new_perm == permutation # if the size of the chunk to be shuffled is small, there is a chance that it may not be differently ordered by shuffle...
+				redo # ... redo is used to ensure that a mutant permutation is created
+			end
+			if ig != nil
+				new_perm.insert(ig, ig_obj)
+			end
+			mutant << new_perm # the new permutation has been added to an array for access outside the 1.times loop
+		end
+		return mutant[0] # new_perm
+	end
+
+	# Returns a new permutation where two of the objects have swapped positions (indices)
+	def self.swap_mutate(permutation)
+		a = b = x = y = 0
+		until a != b
+			x = rand(permutation.length-1) # randomly choose two indices x and y...
+			y = rand(permutation.length-1)
+			a = permutation[x] # ... and call the objects at these indices a and b
+			b = permutation[y]
+		end
+		mutant = permutation.dup # create a new permutation...
+		mutant[x] = b # ... with object b at index x...
+		mutant[y] = a # ... and object a at index y
+		return mutant
+	end
+
+	# Returns a permutation whose objects are ordered partly like a_parent and partly like b_parent
 	def self.recombine(a_parent, b_parent)
 		kid = []
-		1.times do # so we can use redo
-			x = division(a_parent)
+		1.times do  # this is to make use of the redo statement below
+			x = division(a_parent) # the randomly chosen size of chunks that permutations will be split into
 			if x == a_parent.length && prime?(x) == false # If a permutation with a non-prime number of objects comes up with x == array length, redo
 				redo
 			elsif x == a_parent.length # to compensate for permutations with a prime number of objects:
@@ -81,44 +124,4 @@ class PMeth
 		return kid[0]
 	end
 
-	# Input: A permutation array of unique objects
-	# Output: A slightly different permutation array of the same unique objects
-	def self.mutate(fasta)
-		mutant = []
-		1.times do
-			x = 0
-			until x > 2
-				x = division(fasta)
-			end
-			sliced = fasta.each_slice(x).to_a
-			e = rand(sliced.length-1).to_i
-			sliced[e] = sliced[e].shuffle
-			if sliced.flatten == fasta
-				redo
-			end
-			mutant << sliced.flatten
-		end
-		return mutant[0]
-	end
-
-	# Input: A permutation array of unique objects
-	# Output: A slightly different permutation array of the same unique objects
-	def self.mini_mutate(fasta)
-		a = b = 0
-		until a != b
-			a = fasta[rand(fasta.length-1)]
-			b = fasta[rand(fasta.length-1)]
-		end
-		mutant = []
-		fasta.each do |i|
-			if i == a
-				mutant << b
-			elsif i == b
-				mutant << a
-			else
-				mutant << i
-			end
-		end
-		return mutant
-	end
 end
