@@ -10,11 +10,11 @@ class PMeth
 		true
 	end
 
-	# Returns a random integer that array can be divided by to get another integer
+	# Returns a random integer that array can be divided by to get another integer (other than the array length itself)
 	def self.division(array)
 		x = 1.5 # x assigned a non-integer value to begin with
-		if prime?(array.length) # array with prime number of objects is not divisible by any integer other than itself
-			x = array.length
+		if prime?(array.length) # array with prime number of objects is not divisible by any integer other than 1 and itself
+			x = 1
 		else
 			until x > 0 && array.length/x.to_f == (array.length/x.to_f).to_i && Integer === x
 				x = rand(array.length)
@@ -66,62 +66,54 @@ class PMeth
 		return mutant
 	end
 
-	# Returns a permutation whose objects are ordered partly like a_parent and partly like b_parent
+	# Returns a permutation whose objects are ordered partly like a_parent permutation, and partly like b_parent permutation
 	def self.recombine(a_parent, b_parent)
-		kid = []
-		1.times do  # this is to make use of the redo statement below
+		child_permutation = []
+		1.times do # this is to make use of the redo statement below
 			x = division(a_parent) # the randomly chosen size of chunks that permutations will be split into
-			if x == a_parent.length && prime?(x) == false # If a permutation with a non-prime number of objects comes up with x == array length, redo
-				redo
-			elsif x == a_parent.length # to compensate for permutations with a prime number of objects:
-				ig = rand(a_parent.length)-1 # choose a random element of the array to ignore - we add the object at this element back at its original position after recombination
-				a_parent_reduced = a_parent.dup
-				b_parent_reduced = b_parent.dup
-				a_parent_reduced.delete_at(ig)
-				b_parent_reduced.delete_at(ig)
-				x = division(a_parent_reduced)
-				a_parent_sliced = a_parent_reduced.each_slice(x).to_a
+			if prime?(a_parent.length) # to compensate for permutations with a prime number of objects:
+				ig = rand(a_parent.length)-1 # choose a random object to ignore - to add back at its original index after mutation
+				a_parent_reduced, b_parent_reduced = a_parent.dup, b_parent.dup # then create duplicates of the parent arrays...
+				a_parent_reduced.delete_at(ig); b_parent_reduced.delete_at(ig) # .. and remove the ignored object from these duplicates
+				x = division(a_parent_reduced) # choose a new chunk size for reduced parent permutations, that no longer have a prime number of objects
+				a_parent_sliced = a_parent_reduced.each_slice(x).to_a # slice the reduced parent permutations into chunks of size x
 				b_parent_sliced = b_parent_reduced.each_slice(x).to_a
 			else
-				a_parent_sliced = a_parent.each_slice(x).to_a
+				a_parent_sliced = a_parent.each_slice(x).to_a # if permutation lengths are non-prime, just slice the parent permutations into chunks of size x
 				b_parent_sliced = b_parent.each_slice(x).to_a
 			end
-			chosen = rand(b_parent_sliced.length)-1 # choose one of the chunks (sub array from a permutation) to keep from b_parent
-			child = a_parent_sliced.flatten.dup
-			y = 0
-			pos_array = []
-			a_parent_sliced[chosen].each do |object| # place each object in the equivalent a_parent chunk into the position it's corresponding object (from b_parent) occupies in a_parent
-				chunk = b_parent_sliced[chosen][y] # the equivalent object in the chosen b_parent chunk
-				pos = a_parent_sliced.flatten.index(chunk) # the position of the b_parent chunk in a_parent
-				c_pos = a_parent_sliced.flatten.index(object) # the position of the object in a_parent
-				pos_array << pos
-				y+=1
+			chosen = rand(b_parent_sliced.length)-1 # choose a chunk to have b_parent ordered objects in child permutation
+			child = a_parent_sliced.flatten.dup # un-modified child permutation to accept chunk from b_parent (and possibly ignored object)
+			a_indices = []
+			### place each object in chosen a_parent chunk into the index it's corresponding object (from b_parent) occupies in a_parent ###
+			a_parent_sliced[chosen].each do |i| 
+				index = a_parent_sliced[chosen].index(i) # the index of each object in the chosen a_parent chunk...
+				b_object = b_parent_sliced[chosen][index] # ... the object at that index in the chosen b_parent chunk...
+				a_indices << a_parent_sliced.flatten.index(b_object) # ... the index of that object (from b_parent chunk) (INDEX RHO) in a_parent is added to an array
 			end
-			if pos_array.include?(nil)
+			if a_indices.include?(nil) # TODO unsure why: a_indices sometimes includes nil
 				redo
 			else
 				y = 0
-				pos_array.each do |pos|
-					unless b_parent_sliced[chosen].include?(a_parent_sliced[chosen][y])
-						child[pos] = a_parent_sliced[chosen][y]
-						child[a_parent_sliced.flatten.index(a_parent_sliced[chosen][y])] = b_parent_sliced[chosen][y] # swapping the positions of objects in chunks from parents, to give their positions in child
+				a_indices.each do |ai|
+					unless b_parent_sliced[chosen].include?(a_parent_sliced[chosen][y]) # unless the chosen chunk from b_parent includes objects from the chosen a_parent chunk...
+						child[ai] = a_parent_sliced[chosen][y] # ... the object from the chosen chunk in parent_a is added to INDEX RHO in child
+						chosen_index = a_parent_sliced.flatten.index(a_parent_sliced[chosen][y]) # index of object from a_parent's chosen chunk in a_parent
+						child[chosen_index] = b_parent_sliced[chosen][y] # swapping the indices of objects in chunks from parents, to give their indices in child
 					end
 					y+=1
 				end
 			end
-			if ig != nil
+			if ig != nil # if the permutations are a prime number in length, we now add the ignored object from earlier into child
 				if b_parent_sliced[chosen].include?(b_parent[ig]) # add the ignored object from b_parent if it's in the chosen chunk...
 					child.insert(ig, b_parent[ig])
 				else
 					child.insert(ig, a_parent[ig]) # ...otherwise add the ignored object from a_parent
 				end
 			end
-			if child != child.uniq
-				redo
-			end
-			kid << child # so we can access this outside the loop
+			child_permutation << child # so we can access this outside the loop
 		end
-		return kid[0]
+		return child_permutation[0]
 	end
 
 end

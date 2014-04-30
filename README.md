@@ -30,19 +30,19 @@ Each method returns a new permutation.
 There are currently two mutation methods and one recombination method, which can be used as follows:
 
 ```ruby
-PMeth.mutate(a)
-PMeth.mini_mutate(a)
+PMeth.chunk_mutate(a)
+PMeth.swap_mutate(a)
 PMeth.recombine(a,b)
 ```
 
 How methods work
 -----
 
-### Mutate
+### Chunk mutate
 
 One permutation is taken as input (the permutation to be mutated). It is split into chunks of size X, where X is a random whole number that the permutation array's size is divisible by. The objects within the chunk are then shuffled, to give the new "mutant" permutation.
 
-### Mini mutate
+### Swap mutate
 
 One permutation is taken as input. Two of the the objects, chosen at random, swap position.
 
