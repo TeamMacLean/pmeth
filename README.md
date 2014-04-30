@@ -16,7 +16,7 @@ OR download [here](https://rubygems.org/gems/pmeth)
 Usage
 ----
 
-Currently the methods described below can only be used to rearrange permutations of **>= 10 unique** objects.
+The methods below create new permutation arrays from existing ones.
 
 For example:
 
