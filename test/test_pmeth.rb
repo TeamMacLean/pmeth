@@ -47,7 +47,7 @@ class TestPMeth < Test::Unit::TestCase
 		assert(swap_mutant2.sort == T2.sort, 'swap_mutant2 not a permutation')
 	end
 
-	def test_recombination
+	def test_recombine
 		ts = TEST_ARRAY.shuffle
 		child = PMeth.recombine(TEST_ARRAY, ts)
 		assert_kind_of(Array, child, 'Child not array')
