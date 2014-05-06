@@ -51,6 +51,8 @@ One permutation is taken as input (the permutation to be mutated). It is split i
 
 If the size of the permutation (array length) is a prime number, one of the objects (chosen at random) is removed first. The shortened permutation is mutated as described above, then the deleted objected is added into the mutant, at the index it was located in the original permutation.
 
+For chunk_mutate to work, permutations must be at least 4 unique objects long.
+
 ### Swap mutate
 
 One permutation is taken as input. Two of the the objects, chosen at random, swap position.
