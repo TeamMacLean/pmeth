@@ -64,7 +64,6 @@ class PMeth
 
 	# Returns a permutation whose objects are ordered partly like parent_1 permutation, and partly like parent_2 permutation
 	def self.recombine(parent_1, parent_2)
-		child = []
 		x = division(parent_1) # the randomly chosen size of chunks that permutations will be split into
 		if prime?(parent_1.length) # to compensate for permutations with a prime number of objects:
 			ig = rand(parent_1.length)-1 # choose a random object to ignore - to add back at its original index after mutation
