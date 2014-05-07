@@ -4,11 +4,12 @@ require 'test/unit'
 
 class TestPMeth < Test::Unit::TestCase
 
-	T1 = %w(a b c d e f g h i j k l m n o p q r s t) # 20
-	T2 = T1[0..-2] # 19
-	T3 = T1[0..5] # 6
+	T1 = (1..20).to_a
+	T2 = (1..19).to_a
+	T3 = (1..6).to_a
+	T4 = (1..53).to_a
 
-	TEST_ARRAYS = [T1, T2, T3]
+	TEST_ARRAYS = [T1, T2, T3, T4]
 
 	def test_division
 		x1 = PMeth.division(T1)
