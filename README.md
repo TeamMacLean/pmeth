@@ -63,6 +63,8 @@ Two parent permutations are used as input. Each of the parents are split into ch
 
 If the size of each parent permutation (array length) is a prime number, one of the objects (chosen at random) is removed first. The shortened permutation is mutated as described above, then the deleted objected is added into the mutant, at the index it was located in the original permutation.
 
+For short permutations (arrays with a small number of unique objects), recombine can sometimes produce a child that is identical to one of the parents.
+
 ### Division
 
 This method is used within chunk_mutate and recombine, to get random integer that the input array's length can be divided by to get another integer (other than the array length itself). It takes as input an array.
