@@ -28,8 +28,9 @@ class TestPMeth < Test::Unit::TestCase
 			chunk_mutant = PMeth.chunk_mutate(t.dup)
 			assert_kind_of(Array, chunk_mutant, "chunk_mutant#{x} not an array!")
 			assert(chunk_mutant.uniq == chunk_mutant, "chunk_mutant#{x} not unique")
-			assert(chunk_mutant != t, "chunk_mutant#{x} was the same as parent")
-			assert(chunk_mutant.sort == t.sort, "chunk_mutant#{x} not a permutation")
+			assert(t != chunk_mutant, "chunk_mutant#{x} was the same as parent")
+			assert(t.sort == chunk_mutant.sort, "chunk_mutant#{x} not a permutation")
+			assert(t.length == chunk_mutant.length, "chunk_mutant#{x} wrong length")
 			x+=1
 		end	
 	end
@@ -40,8 +41,9 @@ class TestPMeth < Test::Unit::TestCase
 			swap_mutant = PMeth.swap_mutate(t)
 			assert_kind_of(Array, swap_mutant, "swap_mutant#{x} not array")
 			assert(swap_mutant.uniq == swap_mutant, "swap_mutant#{x} not unique")
-			assert(swap_mutant != t, "swap_mutant#{x} same as non-mutant")
-			assert(swap_mutant.sort == t.sort, "swap_mutant#{x} not a permutation")
+			assert(t != swap_mutant, "swap_mutant#{x} same as non-mutant")
+			assert(t.sort == swap_mutant.sort, "swap_mutant#{x} not a permutation")
+			assert(t.length == swap_mutant.length, "swap_mutant#{x} wrong length")
 			x+=1
 		end
 	end
