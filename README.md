@@ -1,6 +1,7 @@
 pmeth
 =====
 [![Gem Version](https://badge.fury.io/rb/pmeth.svg)](http://badge.fury.io/rb/pmeth)
+[![Build Status](https://drone.io/github.com/edwardchalstrey1/pmeth/status.png)](https://drone.io/github.com/edwardchalstrey1/pmeth/latest)
 
 Ruby gem: Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, where permutations are arrays of unique objects.
 
