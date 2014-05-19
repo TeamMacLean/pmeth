@@ -38,10 +38,7 @@ PMeth.recombine(a,b)
 
 Other methods:
 
-```ruby
-PMeth.division(a)
-PMeth.prime?(Integer)
-```
+```factors``` and ```prime?``` methods have been added to Integer class. See [lib/pmeth](https://github.com/edwardchalstrey1/pmeth/blob/master/lib/pmeth.rb)
 
 How methods work
 -----
