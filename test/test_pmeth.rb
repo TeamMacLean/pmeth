@@ -4,13 +4,13 @@ require 'test/unit'
 
 class TestPMeth < Test::Unit::TestCase
 
-  def setup
-	  @t1 = (1..20).to_a
-	  @t2 = (1..19).to_a
-	  @t3 = (1..6).to_a
-	  @t4 = (1..53).to_a
-	  @test_arrays = [@t1, @t2, @t3, @t4]
-  end
+	def setup
+		@t1 = (1..20).to_a
+		@t2 = (1..19).to_a
+		@t3 = (1..6).to_a
+		@t4 = (1..53).to_a
+		@test_arrays = [@t1, @t2, @t3, @t4]
+	end
   
 	def test_division
 		x1 = PMeth.division(@t1)
@@ -24,19 +24,16 @@ class TestPMeth < Test::Unit::TestCase
 	end
 
 
-  def test_methods
-     @test_arrays.each_with_index do |t,i|
-     [ [PMeth.chunk_mutate(t.dup), :chunk_mutant], [PMeth.swap_mutate(t), :swap_mutant], [PMeth.recombine(t, t.shuffle), :child] ].each do |list, method|
-    	  assert_kind_of(Array, list, "#{method} #{i} not an array!")
-			  assert(list.uniq == list, "#{method} #{i} not unique")
-			  assert(t != list, "#{method} #{i} was the same as parent")
-			  assert(t.sort == list.sort, "#{method} #{i} not a permutation")
-			  assert(t.length == list.length, "#{method} #{i} wrong length")
-    end
-   end
-  end
-
-
-
+	def test_methods
+    	@test_arrays.each_with_index do |t,i|
+	     	[[PMeth.chunk_mutate(t.dup), :chunk_mutant], [PMeth.swap_mutate(t), :swap_mutant], [PMeth.recombine(t, t.shuffle), :child]].each do |list, method|
+	    		assert_kind_of(Array, list, "#{method} #{i} not an array!")
+				assert(list.uniq == list, "#{method} #{i} not unique")
+				assert(t != list, "#{method} #{i} was the same as parent")
+				assert(t.sort == list.sort, "#{method} #{i} not a permutation")
+				assert(t.length == list.length, "#{method} #{i} wrong length")
+	    	end
+		end
+	end
 end
 
