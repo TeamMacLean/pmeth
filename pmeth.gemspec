@@ -1,8 +1,8 @@
 #encoding: utf-8
 Gem::Specification.new do |s|
   s.name        = 'pmeth'
-  s.version     = '0.0.5'
-  s.date        = '2014-05-07'
+  s.version     = '1.0.0'
+  s.date        = '2014-05-19'
   s.summary     = "Methods for permutation reproduction"
   s.description = "Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, 
   where permutations are arrays of unique objects. github: https://github.com/edwardchalstrey1/pmeth"
