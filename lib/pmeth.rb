@@ -1,4 +1,12 @@
 #encoding: utf-8
+class Integer
+  #returns all positive factors of an Integer
+  def factors
+     (1..self).select { |n| (self % n).zero? } 
+  end
+end
+
+
 class PMeth
 	# Returns true if integer n is a prime number, false if not
 	def self.prime?(n)
@@ -12,16 +20,9 @@ class PMeth
 	end
 
 	# Returns a random integer that array can be divided by to get another integer (other than the array length itself)
+	# by getting all the factors of the array length and ditching the 1 and array length
 	def self.division(array)
-		x = 1.5 # x assigned a non-integer value to begin with
-		if prime?(array.length) # array with prime number of objects is not divisible by any integer other than 1 and itself
-			x = 1
-		else
-			until x > 0 && array.length/x.to_f == (array.length/x.to_f).to_i && Integer === x
-				x = rand(array.length)
-			end
-		end
-		return x
+		array.length.factors.select {|n| n != 1 && n != array.length}.sample		
 	end
 
 	# Returns a new permutation that has had a randomly sized sub-section re-ordered by shuffle
