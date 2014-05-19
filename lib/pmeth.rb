@@ -1,31 +1,31 @@
 #encoding: utf-8
+
+require 'prime'
+
+class Integer
+  #returns all positive factors of an Integer
+  def factors
+     (1..self).select { |n| (self % n).zero? } 
+  end
+  
+  #returns true if self is a prime number, false otherwise
+  def prime?
+    Prime.prime?(self)
+  end
+end
+
+
 class PMeth
-	# Returns true if integer n is a prime number, false if not
-	def self.prime?(n)
-		for d in 2..(n - 1)
-			if (n % d) == 0
-				return false
-			end
-		end
-		true
-	end
 
 	# Returns a random integer that array can be divided by to get another integer (other than the array length itself)
+	# by getting all the factors of the array length and ditching the array length
 	def self.division(array)
-		x = 1.5 # x assigned a non-integer value to begin with
-		if prime?(array.length) # array with prime number of objects is not divisible by any integer other than 1 and itself
-			x = 1
-		else
-			until x > 0 && array.length/x.to_f == (array.length/x.to_f).to_i && Integer === x
-				x = rand(array.length)
-			end
-		end
-		return x
+		array.length.factors.select {|n| n != array.length}.sample
 	end
 
 	# Returns a new permutation that has had a randomly sized sub-section re-ordered by shuffle
 	def self.chunk_mutate(permutation)
-		if prime?(permutation.length) # if there are a prime number of objects in the permutation
+		if permutation.length.prime? # if there are a prime number of objects in the permutation
 			ig = rand(permutation.length)-1 # choose a random object to ignore - to add back at its original index after mutation
 			ig_obj = permutation[ig] # save the object
 			permutation.delete_at(ig)
@@ -65,7 +65,7 @@ class PMeth
 	# Returns a permutation whose objects are ordered partly like parent_1 permutation, and partly like parent_2 permutation
 	def self.recombine(parent_1, parent_2)
 		x = division(parent_1) # the randomly chosen size of chunks that permutations will be split into
-		if prime?(parent_1.length) # to compensate for permutations with a prime number of objects:
+		if parent_1.length.prime? # to compensate for permutations with a prime number of objects:
 			ig = rand(parent_1.length)-1 # choose a random object to ignore - to add back at its original index after mutation
 			p2_ig = parent_2.index(parent_1[ig]) # choose the same object from parent_2
 			parent_1_reduced, parent_2_reduced = parent_1.dup, parent_2.dup # then create duplicates of the parent arrays...
