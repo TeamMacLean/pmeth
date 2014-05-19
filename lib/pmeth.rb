@@ -2,6 +2,7 @@
 class PMeth
 	# Returns true if integer n is a prime number, false if not
 	def self.prime?(n)
+	  return false if n <= 1
 		for d in 2..(n - 1)
 			if (n % d) == 0
 				return false
