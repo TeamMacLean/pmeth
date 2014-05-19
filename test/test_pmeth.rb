@@ -25,14 +25,14 @@ class TestPMeth < Test::Unit::TestCase
 
 
 	def test_methods
-    	@test_arrays.each_with_index do |t,i|
-	     	[[PMeth.chunk_mutate(t.dup), :chunk_mutant], [PMeth.swap_mutate(t), :swap_mutant], [PMeth.recombine(t, t.shuffle), :child]].each do |list, method|
-	    		assert_kind_of(Array, list, "#{method} #{i} not an array!")
+    		@test_arrays.each_with_index do |t,i|
+	     		[[PMeth.chunk_mutate(t.dup), :chunk_mutant], [PMeth.swap_mutate(t), :swap_mutant], [PMeth.recombine(t, t.shuffle), :child]].each do |list, method|
+		    		assert_kind_of(Array, list, "#{method} #{i} not an array!")
 				assert(list.uniq == list, "#{method} #{i} not unique")
 				assert(t != list, "#{method} #{i} was the same as parent")
 				assert(t.sort == list.sort, "#{method} #{i} not a permutation")
 				assert(t.length == list.length, "#{method} #{i} wrong length")
-	    	end
+	    		end
 		end
 	end
 end
