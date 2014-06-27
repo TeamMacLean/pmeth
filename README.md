@@ -33,6 +33,7 @@ There are currently two mutation methods and one recombination method, which can
 ```ruby
 PMeth.chunk_mutate(a)
 PMeth.swap_mutate(a)
+PMeth.adjacent_swap(a)
 PMeth.recombine(a,b)
 ```
 
@@ -54,6 +55,10 @@ For chunk_mutate to work, permutations must be at least 4 unique objects long.
 ### Swap mutate
 
 One permutation is taken as input. Two of the the objects, chosen at random, swap position.
+
+### Adjacent swap
+
+One permutation is taken as input. An object, chosen at random, is swapped with one of it's immediate neighbours.
 
 ### Recombine
 
