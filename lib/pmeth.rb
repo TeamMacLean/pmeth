@@ -3,15 +3,15 @@
 require 'prime'
 
 class Integer
-  #returns all positive factors of an Integer
-  def factors
-     (1..self).select { |n| (self % n).zero? } 
-  end
+	#returns all positive factors of an Integer
+	def factors
+    	(1..self).select { |n| (self % n).zero? } 
+	end
   
-  #returns true if self is a prime number, false otherwise
-  def prime?
-    Prime.prime?(self)
-  end
+	#returns true if self is a prime number, false otherwise
+	def prime?
+		Prime.prime?(self)
+	end
 end
 
 
@@ -26,7 +26,7 @@ class PMeth
 	# Returns a new permutation that has had a randomly sized sub-section re-ordered by shuffle
 	def self.chunk_mutate(permutation)
 		if permutation.length.prime? # if there are a prime number of objects in the permutation
-			ig = rand(permutation.length)-1 # choose a random object to ignore - to add back at its original index after mutation
+			ig = rand(permutation.length) # choose a random object to ignore - to add back at its original index after mutation
 			ig_obj = permutation[ig] # save the object
 			permutation.delete_at(ig)
 		end
@@ -35,7 +35,7 @@ class PMeth
 			x = division(permutation)
 		end
 		sliced = permutation.each_slice(x).to_a # permutation is sliced into chunks of size x
-		e = rand(sliced.length-1) # one of the chunks is chosen at random...
+		e = rand(sliced.length) # one of the chunks is chosen at random...
 		chunk = sliced[e]
 		until sliced[e] != chunk
 			sliced[e] = sliced[e].shuffle # ... and the objects within are shuffled
@@ -47,12 +47,12 @@ class PMeth
 		return mutant
 	end
 
-	# Returns a new permutation where two of the objects have swapped positions (indices)
+	# Returns a new permutation where two of the objects, chosen at random, have swapped positions (indices)
 	def self.swap_mutate(permutation)
 		a = b = x = y = 0
 		until a != b
-			x = rand(permutation.length-1) # randomly choose two indices x and y...
-			y = rand(permutation.length-1)
+			x = rand(permutation.length) # randomly choose two indices x and y...
+			y = rand(permutation.length)
 			a = permutation[x] # ... and call the objects at these indices a and b
 			b = permutation[y]
 		end
@@ -62,11 +62,19 @@ class PMeth
 		return mutant
 	end
 
+	# def self.adjacent_swap(permutation)
+	# 	x = rand(permutation.length) # randomly choose an index
+	# 	coin = rand(2)
+	# 	if x == 0 || coin == 0
+	# 		y = x+1
+	# 	elsif x == 
+
+
 	# Returns a permutation whose objects are ordered partly like parent_1 permutation, and partly like parent_2 permutation
 	def self.recombine(parent_1, parent_2)
 		x = division(parent_1) # the randomly chosen size of chunks that permutations will be split into
 		if parent_1.length.prime? # to compensate for permutations with a prime number of objects:
-			ig = rand(parent_1.length)-1 # choose a random object to ignore - to add back at its original index after mutation
+			ig = rand(parent_1.length) # choose a random object to ignore - to add back at its original index after mutation
 			p2_ig = parent_2.index(parent_1[ig]) # choose the same object from parent_2
 			parent_1_reduced, parent_2_reduced = parent_1.dup, parent_2.dup # then create duplicates of the parent arrays...
 			parent_1_reduced.delete_at(ig); parent_2_reduced.delete_at(p2_ig) # .. and remove the ignored object from these duplicates
@@ -75,7 +83,7 @@ class PMeth
 		else
 			p1s, p2s = parent_1.each_slice(x).to_a, parent_2.each_slice(x).to_a # if permutation lengths are non-prime, just slice the parent permutations into chunks of size x
 		end
-		chosen = rand(p2s.length)-1 # choose a chunk to have parent_2 ordered objects in child permutation
+		chosen = rand(p2s.length) # choose a chunk to have parent_2 ordered objects in child permutation
 		child = p1s.flatten.dup # un-modified child permutation to accept chunk from parent_2 (and possibly ignored object)
 		p1s[chosen].each do |i| # place each object in chosen parent_1 chunk into the index it's corresponding object (from parent_2) occupies in parent_1:
 			index = p1s[chosen].index(i) # the index of each object in the chosen parent_1 chunk...
