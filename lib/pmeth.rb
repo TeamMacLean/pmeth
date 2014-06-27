@@ -62,13 +62,20 @@ class PMeth
 		return mutant
 	end
 
-	# def self.adjacent_swap(permutation)
-	# 	x = rand(permutation.length) # randomly choose an index
-	# 	coin = rand(2)
-	# 	if x == 0 || coin == 0
-	# 		y = x+1
-	# 	elsif x == 
-
+	# Returns a new permutation where an object, chosen at random, has swapped position with one of it's immediate neighbours
+	def self.adjacent_swap(permutation)
+		x = rand(permutation.length) # randomly choose an index
+		coin = rand(2) # a 50% chance for an object to swap with it's left or right neighbour
+		if x == 0 || coin == 0 # object at index 0 of array can only swap with index 1
+			y = x + 1
+		elsif x == permutation.length-1 || coin == 1 # object at index -1 of array can only swap with index -2
+			y = x - 1
+		end
+		mutant = permutation.dup
+		mutant[x] = permutation[y]
+		mutant[y] = permutation[x]
+		return mutant
+	end
 
 	# Returns a permutation whose objects are ordered partly like parent_1 permutation, and partly like parent_2 permutation
 	def self.recombine(parent_1, parent_2)
