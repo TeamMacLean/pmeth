@@ -28,7 +28,7 @@ b = a.shuffle
 
 Each method returns a new permutation.
 
-There are currently two mutation methods and one recombination method, which can be used as follows:
+There are currently three mutation methods and one recombination method, which can be used as follows:
 
 ```ruby
 PMeth.chunk_mutate(a)
