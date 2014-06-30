@@ -66,9 +66,13 @@ class PMeth
 	def self.adjacent_swap(permutation)
 		x = rand(permutation.length) # randomly choose an index
 		coin = rand(2) # a 50% chance for an object to swap with it's left or right neighbour
-		if x == 0 || coin == 0 # object at index 0 of array can only swap with index 1
+		if x == 0 # object at index 0 of array can only swap with index 1
 			y = x + 1
-		elsif x == permutation.length-1 || coin == 1 # object at index -1 of array can only swap with index -2
+		elsif x == permutation.length-1 # object at index -1 of array can only swap with index -2
+			y = x - 1
+		elsif coin == 0
+			y = x + 1
+		elsif coin == 1
 			y = x - 1
 		end
 		mutant = permutation.dup
