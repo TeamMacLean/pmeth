@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="pmeth : Ruby gem: Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, where permutations are arrays of unique objects." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>pmeth</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/edwardchalstrey1/pmeth">View on GitHub</a>
+
+          <h1 id="project_title">pmeth</h1>
+          <h2 id="project_tagline">Ruby gem: Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, where permutations are arrays of unique objects.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/edwardchalstrey1/pmeth/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/edwardchalstrey1/pmeth/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="pmeth" class="anchor" href="#pmeth"><span class="octicon octicon-link"></span></a>pmeth</h1>
+
+<p>Ruby gem: Reproduction methods for genetic (and other iterative improvement) algorithms, being used to solve permutation problems, where permutations are arrays of unique objects.</p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<pre><code>gem install pmeth
+</code></pre>
+
+<p>OR download <a href="https://rubygems.org/gems/pmeth">here</a></p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The methods below create new permutation arrays from existing ones.</p>
+
+<p>For example:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">a</span> <span class="o">=</span> <span class="sx">%w(a b c d e f g h i j)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shuffle</span>
+</pre></div>
+
+<p>Each method returns a new permutation.</p>
+
+<p>There are currently three mutation methods and one recombination method, which can be used as follows:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">PMeth</span><span class="o">.</span><span class="n">chunk_mutate</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="no">PMeth</span><span class="o">.</span><span class="n">swap_mutate</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="no">PMeth</span><span class="o">.</span><span class="n">adjacent_swap</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="no">PMeth</span><span class="o">.</span><span class="n">recombine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+<p>Other methods:</p>
+
+<p><code>factors</code> and <code>prime?</code> methods have been added to Integer class. See <a href="https://github.com/edwardchalstrey1/pmeth/blob/master/lib/pmeth.rb">lib/pmeth</a></p>
+
+<h2>
+<a name="how-methods-work" class="anchor" href="#how-methods-work"><span class="octicon octicon-link"></span></a>How methods work</h2>
+
+<h3>
+<a name="chunk-mutate" class="anchor" href="#chunk-mutate"><span class="octicon octicon-link"></span></a>Chunk mutate</h3>
+
+<p>One permutation is taken as input (the permutation to be mutated). It is split into chunks of size X, where X is a random whole number that the permutation array's size is divisible by. The objects within the chunk are then shuffled, to give the new "mutant" permutation. </p>
+
+<p>If the size of the permutation (array length) is a prime number, one of the objects (chosen at random) is removed first. The shortened permutation is mutated as described above, then the deleted objected is added into the mutant, at the index it was located in the original permutation.</p>
+
+<p>For chunk_mutate to work, permutations must be at least 4 unique objects long.</p>
+
+<h3>
+<a name="swap-mutate" class="anchor" href="#swap-mutate"><span class="octicon octicon-link"></span></a>Swap mutate</h3>
+
+<p>One permutation is taken as input. Two of the the objects, chosen at random, swap position.</p>
+
+<h3>
+<a name="adjacent-swap" class="anchor" href="#adjacent-swap"><span class="octicon octicon-link"></span></a>Adjacent swap</h3>
+
+<p>One permutation is taken as input. An object, chosen at random, is swapped with one of it's immediate neighbours.</p>
+
+<h3>
+<a name="recombine" class="anchor" href="#recombine"><span class="octicon octicon-link"></span></a>Recombine</h3>
+
+<p>Two parent permutations are used as input. Each of the parents are split into chunks of size X, where X is a random whole number that the permutation array's size is divisible by. One of the chunks from parent 2 is chosen at random, to be recombined with parent 1. The "child" permutation, starts out as a copy of parent 1, then the chosen chunk from parent 2 replaces the equivalent chunk from parent 1. To avoid duplicating or losing unique objects in the child, each object from the chunk being displaced by the "chosen chunk", is placed into the position it's corresponding object (that holds the same position in the chosen chunk) occupies in parent 1. This results in a child permutation that has some parts ordered in the same way as parent 1, a chunk that is in the same order as in parent 2, and some objects different positions than in either parent.</p>
+
+<p>If the size of each parent permutation (array length) is a prime number, one of the objects (chosen at random) is removed first. The shortened permutation is mutated as described above, then the deleted objected is added into the mutant, at the index it was located in the original permutation.</p>
+
+<p>For short permutations (arrays with a small number of unique objects), recombine can sometimes produce a child that is identical to one of the parents.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">pmeth maintained by <a href="https://github.com/edwardchalstrey1">edwardchalstrey1</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
